@@ -21,6 +21,7 @@ class GamesListGenresView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(GamesListGenresView, self).get_context_data(**kwargs)
         context['genres'] = Genres.objects.all()
+        context['title'] = 'Каталог'
         return context
 
 
@@ -28,10 +29,11 @@ class GameDetailView(DetailView):
     model = Games
     template_name = 'store/game.html'
     slug_url_kwarg = 'pk'
-    context_object_name = 'game'
+    context_object_name = 'product'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         context['categories'] = Genres.objects.all()
         context['cart_product_form'] = CartAddProductForm()
+        context['title'] = self.get_object()
         return context

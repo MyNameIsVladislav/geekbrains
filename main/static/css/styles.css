@@ -26,10 +26,26 @@
     align-items: center;
     border: 2px solid cornflowerblue;
 }
+.carousel-inner, .describe {
+    margin: 0 auto;
+    width: 80%;
+}
 .right {
     float: right;
 }
 
+.card {
+    width: 60%;
+    margin: 0 auto;
+}
+.card-game {
+    width: 100%;
+}
 .card-img-top {
-    width: 400px;
+    width: 100%;
+}
+.product {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }

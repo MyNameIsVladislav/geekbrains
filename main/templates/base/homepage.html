@@ -12,18 +12,18 @@
         {% include 'base/nav-bar.html' %}
                 {% block content %}
                     {% include 'base/carusel.html' %}
-                    <div class="container card text-center p-0 mt-4">
+                    <div class="card text-center p-0 mt-4">
                           <div class="card-header">
                             Новинки
                           </div>
                         {% for game in games %}
                               <div class="card-body">
                                 <div class="card mb-3">
-                                  <img src="/media/{{game.banner}}" class="card-img-top"  width="50%" alt="...">
+                                  <a href="{{ game.get_absolute_url }}"><img src="/media/{{game.banner}}" class="card-img-top"  alt="{{game.slug}}"></a>
                                   <div class="card-body">
-                                    <h5 class="card-title">Заголовок карточки</h5>
-                                    <p class="card-text">Это более широкая карточка с вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
-                                    <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>
+                                    <h5 class="card-title">{{ game.name }}</h5>
+                                    <p class="card-text">{{ game.describe | truncatechars:10 }}</p>
+                                    <p class="card-text"><small class="text-muted">{{ game.created_at }}</small></p>
                                   </div>
                                 </div>
                               </div>

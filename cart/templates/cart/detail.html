@@ -3,10 +3,10 @@
 {% block title %}Корзина{% endblock %}
 {% block content %}
 {% load static %}
-<div class="product container">
+<div class="container">
     <h3 class="text-center mt-5 mb-2"> Ваша корзина {% if cart|length == 0 %} пуста {% endif %}</h3>
 
-        <table class="table table-dark table-hover table-cart font-mob">
+        <table class="table table-striped table-hover table-cart">
   <thead>
     <tr class="mob-none">
       <th scope="col">Изображение</th>
@@ -43,6 +43,6 @@
   </tr>
   </tbody>
 </table>
-  <a href="{% url 'shop:catalog' %}"> <button class="btn btn-primary font-mob"> Продолжить покупки </button></a>
+  <a href="{% url 'store:catalog' 'all' %}"> <button class="btn btn-primary font-mob"> Продолжить покупки </button></a>
 </div>
 {% endblock content %}

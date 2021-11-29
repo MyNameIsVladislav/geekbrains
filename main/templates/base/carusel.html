@@ -1,4 +1,5 @@
-<div id="carouselExampleCaptions" class="container arousel slide mt-5" data-bs-ride="carousel">
+{% load static %}
+<div id="carouselExampleCaptions" class="container slider carousel slide mt-5" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -6,24 +7,24 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="..." class="d-block w-100" alt="...">
+      <img src="{% static 'img/games.jpg' %}" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
-        <h5>Метка первого слайда</h5>
-        <p>Некоторый репрезентативный заполнитель для первого слайда.</p>
+        <h5>Покупай хиты!</h5>
+        <p>Лучшие новинки по лучшим ценам</p>
       </div>
     </div>
     <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
+      <img src="{% static 'img/contact.jpeg' %}" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
-        <h5>Метка второго слайда</h5>
-        <p>Некоторый репрезентативный заполнитель для второго слайда.</p>
+        <h5>Звони! Пиши!</h5>
+        <p>Круглосуточная служба поддержки!</p>
       </div>
     </div>
     <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
+      <img src="{% static 'img/sale.png' %}" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
-        <h5>Метка третьего слайда</h5>
-        <p>Некоторый репрезентативный заполнитель для третьего слайда.</p>
+        <h5>Скидки!</h5>
+        <p>Много </p>
       </div>
     </div>
   </div>

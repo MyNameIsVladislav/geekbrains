@@ -9,6 +9,25 @@
             <a class="nav-link active" aria-current="page" href="/">Главнная</a>
             <a class="nav-link" href="{% url 'store:catalog' 'all' %}">Каталог</a>
             <a class="nav-link" href="{% url 'contacts:contact' %}"> Контакты </a>
+              {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        Пользователь: {{ user.first_name|default:'' }}
+                        </a>
+                    </li>
+              {% endif %}
+              {% if user.is_authenticated %}
+                  <li style="color: white;">
+                      <a class="nav-link" href="{% url 'cart:cart_detail' %}"> Корзина </a>
+                  </li>
+                  <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:logout' %}">Выйти</a>
+                  </li>
+              {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:login' %}">Войти</a>
+                    </li>
+              {% endif %}
           </div>
         </div>
       </div>

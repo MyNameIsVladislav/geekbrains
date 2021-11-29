@@ -1,0 +1,23 @@
+{% extends 'base/homepage.html' %}
+{% block title %} Контакты {% endblock %}
+{% block content %}
+    <div class="container content-flex p-5">
+        <div contact-data>
+            <h3> Контакты </h3>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                  <a href="mailto:v.kolokolchikoff@yandex.ru">v.kolokolchikoff@yandex.ru</a>
+              </li>
+              <li class="list-group-item">
+                  <a href="tel:243242342">243242342</a>
+              </li>
+            </ul>
+        </div>
+        <form action="{% url 'contacts:contact' %}" method="POST">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-primary right">Submit</button>
+            </form>
+    </div>
+
+{% endblock %}

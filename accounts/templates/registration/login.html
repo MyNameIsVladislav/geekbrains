@@ -1,0 +1,25 @@
+{% extends 'base/homepage.html' %}
+
+{% block content %}
+{% load static %}
+       <header class="bg-dark py-5 red-color">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Авторизация</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Будь с нами ...</p>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="middle container">
+            <div class="form-box">
+                <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
+                    {% csrf_token %}
+                    {{ login_form.as_p }}
+                    <button class="btn btn-primary" type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+
+ {% endblock content %}

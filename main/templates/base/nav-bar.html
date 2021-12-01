@@ -1,6 +1,6 @@
  <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">ForGames</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,13 +12,21 @@
               {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                        Пользователь: {{ user.first_name|default:'' }}
+                        Пользователь: {{ user.first_name }}
                         </a>
                     </li>
               {% endif %}
               {% if user.is_authenticated %}
-                  <li style="color: white;">
-                      <a class="nav-link" href="{% url 'cart:cart_detail' %}"> Корзина </a>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'cart:cart_detail' %}"> Корзина
+                          {% with total_items=cart|length %}
+                              {% if cart|length > 0 %}
+                                  <span class="basket_qty">
+                                      {{ total_items }}
+                                  </span>
+                              {% endif %}
+                          {% endwith %}
+                      </a>
                   </li>
                   <li class="nav-item">
                         <a class="nav-link" href="{% url 'auth:logout' %}">Выйти</a>
@@ -26,6 +34,9 @@
               {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'auth:login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'auth:register' %}">Регистрация</a>
                     </li>
               {% endif %}
           </div>

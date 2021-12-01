@@ -49,3 +49,8 @@
     align-items: center;
     justify-content: space-around;
 }
+.basket_qty {
+    padding: 1px 3px;
+    background-color: red;
+    border-radius: 50%;
+}

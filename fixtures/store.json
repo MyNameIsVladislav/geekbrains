@@ -1,0 +1,90 @@
+[
+{
+  "model": "store.genres",
+  "pk": 1,
+  "fields": {
+    "name": "action",
+    "slug": "action"
+  }
+},
+{
+  "model": "store.genres",
+  "pk": 2,
+  "fields": {
+    "name": "racing",
+    "slug": "racing"
+  }
+},
+{
+  "model": "store.genres",
+  "pk": 3,
+  "fields": {
+    "name": "rpg",
+    "slug": "rpg"
+  }
+},
+{
+  "model": "store.genres",
+  "pk": 4,
+  "fields": {
+    "name": "fighting",
+    "slug": "fighting"
+  }
+},
+{
+  "model": "store.games",
+  "pk": 1,
+  "fields": {
+    "name": "Mortal Kombat 9",
+    "slug": "mortal-kombat-9",
+    "poster": "store/games/mortal-kombat-9/mortal-kombat-9-i107787.jpg",
+    "banner": "store/games/mortal-kombat-9/ccc6d7323e369c6770d6f4fb17fbf27c.jpg",
+    "describe": "Mortal Kombat (also known as MK9) is a fighting video game developed by NetherRealm Studios and published by Warner Bros. Interactive Entertainment. The game is the ninth main installment in the Mortal Kombat series and a soft reboot of the franchise. The game was released for the PlayStation 3 and",
+    "price": 1000,
+    "stock": 10,
+    "created_at": "2021-11-29T16:34:55.094Z",
+    "updated_at": "2021-11-29T16:34:55.094Z",
+    "genres": [
+      1,
+      4
+    ]
+  }
+},
+{
+  "model": "store.games",
+  "pk": 2,
+  "fields": {
+    "name": "Devil May Cry 4",
+    "slug": "devil-may-cry-4",
+    "poster": "store/games/devil-may-cry-4/9269c9763d544caa8561dd2e43d5f412.jpg",
+    "banner": "store/games/devil-may-cry-4/images.jpeg",
+    "describe": "Devil May Cry 4 is a 2008 action-adventure game developed and published by Capcom. It was released for the PlayStation 3, Xbox 360, and Microsoft Windows platforms. It is the fourth installment in the Devil May Cry series and is written by Bingo Morihashi and directed by Hideaki Itsuno.",
+    "price": 700,
+    "stock": 6,
+    "created_at": "2021-11-29T16:41:55.374Z",
+    "updated_at": "2021-11-29T16:41:55.374Z",
+    "genres": [
+      1,
+      4
+    ]
+  }
+},
+{
+  "model": "store.games",
+  "pk": 3,
+  "fields": {
+    "name": "Need for Speed: Underground 2",
+    "slug": "need-for-speed-underground-2",
+    "poster": "store/games/need-for-speed-underground-2/nfs.jpg",
+    "banner": "store/games/need-for-speed-underground-2/nfs2.jpg",
+    "describe": "Need for Speed: Underground 2 is a cross-platform racing video game and the eighth installment in the Need for Speed series, the direct sequel to Need for Speed: Underground.",
+    "price": 350,
+    "stock": 2,
+    "created_at": "2021-11-29T16:43:13.520Z",
+    "updated_at": "2021-11-29T16:43:13.520Z",
+    "genres": [
+      2
+    ]
+  }
+}
+]

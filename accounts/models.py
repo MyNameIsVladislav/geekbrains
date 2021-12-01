@@ -12,7 +12,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(verbose_name='Email', unique=True)
     birthday = models.DateField(verbose_name='Дата рождения', validators=[birthday_validator])
-
+    is_active = models.BooleanField(default=False, verbose_name='Статус аккаунта')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'birthday']
 

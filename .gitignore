@@ -3,3 +3,4 @@
 *pycache*
 *db.sqlite3
 media/users_avatar
+static/*

@@ -1,9 +1,9 @@
 import hashlib
 from random import random
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-
-from accounts.models import User
+from accounts.models import User, Profile
 
 
 class UserLoginForm(AuthenticationForm):
@@ -36,3 +36,28 @@ class UserRegisterForm(UserCreationForm):
         user.activation_key = hashlib.sha1((user.email + salt).encode('utf-8')).hexdigest()
         user.save()
         return user
+
+
+class UserEditForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'password', 'email', 'birthday']
+
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+            if field_name == 'password':
+                field.widget = forms.HiddenInput()
+
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['gender', 'avatar', 'city', 'phone']
+
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'

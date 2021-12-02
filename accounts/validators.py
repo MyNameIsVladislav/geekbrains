@@ -1,3 +1,4 @@
+import re
 from datetime import date
 
 from django.core.validators import BaseValidator
@@ -14,4 +15,12 @@ class BirthdayValidator(BaseValidator):
         return data < valid_age
 
 
+class RegexValidatorPhone(BaseValidator):
+    message = 'Некорректный номер телефона'
+
+    def compare(self, phone, valid_phone):
+        return not re.match(valid_phone, phone)
+
+
 birthday_validator = BirthdayValidator(limit_value=18)
+phone_validator = RegexValidatorPhone(limit_value=r'^(\+(7|1)|8)[0-9]{9}')

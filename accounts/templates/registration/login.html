@@ -21,10 +21,10 @@
                 </form>
                 <button class="btn btn-round form-control">
                     <a href="{% url 'social:begin' 'github' %}?next=/">
-                     Вход через GitHub
+                        <img src="{% static 'img/GitHub-Mark.png' %}" width="50px">
                     </a>
                     <a href="{% url 'social:begin' 'google-oauth2' %}?next=/">
-                     Вход через Google
+                        <img src="{% static 'img/google.png' %}" width="40px">
                     </a>
                 </button>
             </div>

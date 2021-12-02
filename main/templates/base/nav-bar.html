@@ -11,7 +11,7 @@
             <a class="nav-link" href="{% url 'contacts:contact' %}"> Контакты </a>
               {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{% url 'auth:edit' %}">
                         Пользователь: {{ user.first_name }}
                         </a>
                     </li>

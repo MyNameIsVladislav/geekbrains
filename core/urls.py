@@ -16,16 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-
 from core import settings
-
+from social_core.pipeline import user
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls', namespace='main')),
     path('contact/', include('feedback.urls', namespace='contacts')),
     path('auth/', include('accounts.urls', namespace='auth')),
     path('cart/', include('cart.urls', namespace='cart')),
-    path('store/', include('store.urls', namespace='store'))
+    path('store/', include('store.urls', namespace='store')),
+    path('', include('social_django.urls', namespace='social'))
 ]
 
 

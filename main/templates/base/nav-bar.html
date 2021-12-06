@@ -12,7 +12,7 @@
               {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'auth:edit' %}">
-                        Пользователь: {{ user.first_name }}
+                        Пользователь: {{ user.first_name }} | Баланс: {{ wallet }}
                         </a>
                     </li>
               {% endif %}

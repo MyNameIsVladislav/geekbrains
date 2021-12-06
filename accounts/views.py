@@ -16,7 +16,6 @@ profile_menu = [
 
 def login(request):
     title = 'Авторизация'
-    print(request.user)
 
     login_form = UserLoginForm(data=request.POST)
     if request.method == 'POST' and login_form.is_valid():

@@ -21,7 +21,8 @@ def cart_add(request, game_id):
             cart.add(product=product,
                      quantity=cd['quantity'],
                      update_quantity=cd['update'])
-    cart.add(product=product)
+    else:
+        cart.add(product=product, update_quantity=True)
     return redirect('cart:cart_detail')
 
 

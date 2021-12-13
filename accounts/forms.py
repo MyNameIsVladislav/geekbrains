@@ -1,20 +1,42 @@
 import hashlib
 from random import random
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.core.exceptions import ValidationError
 
-from accounts.models import User, Profile
+from authapp.models import User, Profile
 
 
-class UserLoginForm(AuthenticationForm):
+class UserLoginForm(forms.ModelForm):
+
     class Meta:
         model = User
         fields = ['email', 'password']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
+        self.request = request
+        self.user_cache = None
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+
+        if email is not None and password:
+            self.user_cache = authenticate(self.request, email=email, password=password)
+            if self.user_cache is None:
+                raise ValidationError(message="error")
+            else:
+                self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
+
+    def get_user(self):
+        return self.user_cache
+
 
 
 class UserRegisterForm(UserCreationForm):

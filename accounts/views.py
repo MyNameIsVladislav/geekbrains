@@ -4,10 +4,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from django.urls import reverse, reverse_lazy
-from django.template.response import TemplateResponse
-from authapp.models import User
-from authapp.forms import UserLoginForm, UserRegisterForm, UserEditForm, EditProfileForm
-from authapp.service import authenticate_form, registration_form
+
+from accounts.models import User
+from accounts.forms import UserLoginForm, UserRegisterForm, UserEditForm, EditProfileForm
+from accounts.service import registration_form
+
 
 profile_menu = [
     {'title': 'Аккаунт', 'url': 'edit', 'namespace': 'auth:edit'},
@@ -16,7 +17,7 @@ profile_menu = [
 
 
 class LoginNewView(LoginView):
-    template_name = 'registr/login.html'
+    template_name = 'registration/login.html'
     form_class = UserLoginForm
     authentication_form = UserLoginForm
     success_url = reverse_lazy('main:index')
@@ -24,28 +25,6 @@ class LoginNewView(LoginView):
 
     def form_invalid(self, form):
         return self.get(request=self.request)
-
-
-# def login(request,**kwargs):
-#     title = 'Авторизация'
-#
-#     if request.method == 'POST':
-#         login_form = UserLoginForm(data=request.POST)
-#         if login_form.is_valid():
-#             email = request.POST['username']
-#             password = request.POST['password']
-#             user = auth.authenticate(email=email, password=password)
-#             if user and user.is_active:
-#                 auth.login(request, user)
-#                 return HttpResponseRedirect(reverse('main:index'))
-#         else:
-#             return HttpResponseRedirect(reverse('auth:login', kwargs={'message': login_form._errors['__all__'][0]}))
-#     login_form = UserLoginForm()
-#     content = {'title': title, 'login_form': login_form}
-#     if kwargs.get('message', None):
-#         content["message"] = kwargs["message"]
-#
-#     return render(request, template_name='registr/login.html', context=content)
 
 
 def logout(request):
@@ -64,7 +43,7 @@ def register(request):
 
     content = {'title': title, 'register_form': register_form}
 
-    return render(request, 'registr/register.html', content)
+    return render(request, 'registration/register.html', content)
 
 
 def verify(request, email, activation_key):
@@ -73,10 +52,10 @@ def verify(request, email, activation_key):
         user.is_active = True
         user.save()
         auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return render(request, 'registr/verification.html')
+        return render(request, 'registration/verification.html')
     else:
         print(f'error activation user: {user}')
-        return render(request, 'registr/verification.html')
+        return render(request, 'registration/verification.html')
 
 
 def edit_user(request):
@@ -90,7 +69,7 @@ def edit_user(request):
         edit_form = UserEditForm(instance=request.user)
         content = {'title': title, 'edit_form': edit_form, 'menu': profile_menu, 'namespace': 'auth:edit'}
 
-        return render(request, 'registr/edit.html', content)
+        return render(request, 'registration/edit.html', content)
 
 
 def edit_profile(request):
@@ -103,4 +82,4 @@ def edit_profile(request):
 
     profile_form = EditProfileForm(instance=request.user.profile)
     content = {'title': title, 'edit_form': profile_form, 'menu': profile_menu, 'namespace': 'auth:profile'}
-    return render(request, 'registr/edit.html', content)
+    return render(request, 'registration/edit.html', content)

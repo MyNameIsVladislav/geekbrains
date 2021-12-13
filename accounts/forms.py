@@ -2,10 +2,10 @@ import hashlib
 from random import random
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
 
-from authapp.models import User, Profile
+from accounts.models import User, Profile
 
 
 class UserLoginForm(forms.ModelForm):
@@ -37,6 +37,12 @@ class UserLoginForm(forms.ModelForm):
     def get_user(self):
         return self.user_cache
 
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise ValidationError(
+                self.error_messages['inactive'],
+                code='inactive',
+            )
 
 
 class UserRegisterForm(UserCreationForm):

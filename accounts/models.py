@@ -6,9 +6,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
 
-from authapp.managers import CustomUserManager
-from authapp.validators import birthday_validator, phone_validator
-from authapp.utils import user_directory_path
+from accounts.managers import CustomUserManager
+from accounts.validators import birthday_validator, phone_validator
+from accounts.utils import user_directory_path
 
 
 class User(AbstractUser):

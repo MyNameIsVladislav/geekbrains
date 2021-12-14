@@ -1,14 +1,13 @@
 from django.contrib import auth, messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from django.urls import reverse, reverse_lazy
 
 from accounts.models import User
 from accounts.forms import UserLoginForm, UserRegisterForm, UserEditForm, EditProfileForm
-from accounts.service import registration_form
+from accounts.utils import send_verify_mail
 
 
 profile_menu = [
@@ -34,7 +33,18 @@ def register(request):
 
     if request.method == 'POST':
         register_form = UserRegisterForm(request.POST)
-        return registration_form(register_form)
+
+        if register_form.is_valid():
+            register_form.save()
+            user = register_form.save()
+            user.is_active = False
+            user.save()
+            if send_verify_mail(user):
+                print('сообщение подтверждения отправлено')
+                return HttpResponseRedirect(reverse('auth:login'))
+            else:
+                print('ошибка отправки сообщения')
+                return HttpResponseRedirect(reverse('auth:login'))
     else:
         register_form = UserRegisterForm()
 

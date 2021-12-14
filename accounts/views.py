@@ -1,7 +1,8 @@
-from django.contrib import auth
+from django.contrib import auth, messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect
 
 from django.urls import reverse, reverse_lazy
 
@@ -16,15 +17,11 @@ profile_menu = [
 ]
 
 
-class LoginNewView(LoginView):
-    template_name = 'registration/login.html'
-    form_class = UserLoginForm
-    authentication_form = UserLoginForm
-    success_url = reverse_lazy('main:index')
-    redirect_authenticated_user = True
-
-    def form_invalid(self, form):
-        return self.get(request=self.request)
+def login_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse_lazy('main:index'))
+    form = UserLoginForm()
+    return render(request, "registration/login.html", {'login_form': form})
 
 
 def logout(request):
@@ -83,3 +80,16 @@ def edit_profile(request):
     profile_form = EditProfileForm(instance=request.user.profile)
     content = {'title': title, 'edit_form': profile_form, 'menu': profile_menu, 'namespace': 'auth:profile'}
     return render(request, 'registration/edit.html', content)
+
+
+def valid_password(request):
+    token, email, password = request.POST.values()
+    user = authenticate(request, email=email, password=password)
+    context = {'status': False}
+    if user:
+        login(request, user)
+        messages.success(request, "Logged In")
+        context['status'] = True
+    else:
+        context['message'] = 'invalid login or password'
+    return JsonResponse(context, status=200)

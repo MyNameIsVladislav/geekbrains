@@ -2,37 +2,38 @@ import hashlib
 from random import random
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 
 from accounts.models import User, Profile
 
 
 class UserLoginForm(forms.ModelForm):
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ('email', 'password')
+        widgets = {
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
-    def __init__(self, request, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        """
+          specifying styles to fields
+        """
         super(UserLoginForm, self).__init__(*args, **kwargs)
-        self.request = request
-        self.user_cache = None
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+        for field in (self.fields['email'], self.fields['password']):
+            field.widget.attrs.update({'class': 'form-control '})
 
     def clean(self):
-        email = self.cleaned_data.get('email')
-        password = self.cleaned_data.get('password')
+        if self.is_valid():
 
-        if email is not None and password:
-            self.user_cache = authenticate(self.request, email=email, password=password)
-            if self.user_cache is None:
-                raise ValidationError(message="error")
-            else:
-                self.confirm_login_allowed(self.user_cache)
-
-        return self.cleaned_data
+            email = self.cleaned_data.get('email')
+            password = self.cleaned_data.get('password')
+            if not authenticate(email=email, password=password):
+                raise forms.ValidationError('Invalid Login')
 
     def get_user(self):
         return self.user_cache

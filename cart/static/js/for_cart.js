@@ -14,7 +14,7 @@ let workItem = {
 
 
 
-initScript = {
+let initScript = {
     variable,
     workItem,
 
@@ -32,7 +32,7 @@ initScript = {
                 this: this,
 
                 success: function (response) {
-                    this.this.successResponse(response)
+                    initScript.successResponse(response)
                 },
                 }
             );
@@ -55,10 +55,8 @@ initScript = {
     },
 
     updateValue() {
-        console.log(this.workItem.target.value )
         if (this.workItem.target.value === '+' && this.workItem.qty.value < 10) {
                this.workItem.qty.value = Number(this.workItem.qty.value) + 1;
-               console.log(this.workItem.qty.value)
         }
         if (this.workItem.target.value === '-' && this.workItem.qty.value > 1) {
                 this.workItem.qty.value = Number(this.workItem.qty.value) - 1;
@@ -66,9 +64,11 @@ initScript = {
     },
     successResponse(response) {
         if (response.status) {
-            this.workItem.price.innerText = response.price.toFixed(1);
-            this.variable.final_price.innerText = response.final_price.toFixed(1) + ' руб.';
-            this.variable.total_qty.innerText = response.total_qty
+            console.log (this.workItem)
+            this.workItem.price.innerText = Number(response.price).toFixed(1);
+            console.log(this.workItem.qty)
+            this.variable.total_qty.innerText = response.total_qty;
+            this.variable.final_price.innerText = Number(response.final_price).toFixed(1) + ' руб.';
         }
         else {
             console.log("None")

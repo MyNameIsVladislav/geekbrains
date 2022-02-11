@@ -1,20 +1,49 @@
 import hashlib
 from random import random
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.core.exceptions import ValidationError
 
 from accounts.models import User, Profile
 
 
-class UserLoginForm(AuthenticationForm):
+class UserLoginForm(forms.ModelForm):
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ('email', 'password')
+        widgets = {
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
     def __init__(self, *args, **kwargs):
+        """
+          specifying styles to fields
+        """
         super(UserLoginForm, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+        for field in (self.fields['email'], self.fields['password']):
+            field.widget.attrs.update({'class': 'form-control '})
+
+    def clean(self):
+        if self.is_valid():
+
+            email = self.cleaned_data.get('email')
+            password = self.cleaned_data.get('password')
+            if not authenticate(email=email, password=password):
+                raise forms.ValidationError('Invalid Login')
+
+    def get_user(self):
+        return self.user_cache
+
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise ValidationError(
+                self.error_messages['inactive'],
+                code='inactive',
+            )
 
 
 class UserRegisterForm(UserCreationForm):

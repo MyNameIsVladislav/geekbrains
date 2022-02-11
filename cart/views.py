@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from store.models import Games
 from cart.models import Cart
 from cart.forms import CartAddProductForm
+from cart.service import get_update_data
 
 
 @login_required
@@ -41,3 +42,11 @@ class CartDetail(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         cart = Cart(request)
         return render(request, 'cart/detail.html', {'cart': cart})
+
+
+def update_qty(request):
+    pk, qty = map(int, list(request.GET.values()))
+    res = {'status': False}
+    if 1 <= qty <= 10:
+        res = get_update_data(request, pk, qty)
+    return JsonResponse(res)

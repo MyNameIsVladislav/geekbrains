@@ -1,7 +1,9 @@
-from django.contrib import auth
-from django.http import HttpResponseRedirect
+from django.contrib import auth, messages
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-from django.urls import reverse
+
+from django.urls import reverse, reverse_lazy
 
 from accounts.models import User
 from accounts.forms import UserLoginForm, UserRegisterForm, UserEditForm, EditProfileForm
@@ -14,21 +16,11 @@ profile_menu = [
 ]
 
 
-def login(request):
-    title = 'Авторизация'
-
-    login_form = UserLoginForm(data=request.POST)
-    if request.method == 'POST' and login_form.is_valid():
-        email = request.POST['username']
-        password = request.POST['password']
-
-        user = auth.authenticate(email=email, password=password)
-        if user and user.is_active:
-            auth.login(request, user)
-            return HttpResponseRedirect(reverse('main:index'))
-
-    content = {'title': title, 'login_form': login_form}
-    return render(request, 'registration/login.html', content)
+def login_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse_lazy('main:index'))
+    form = UserLoginForm()
+    return render(request, "registration/login.html", {'login_form': form})
 
 
 def logout(request):
@@ -98,3 +90,16 @@ def edit_profile(request):
     profile_form = EditProfileForm(instance=request.user.profile)
     content = {'title': title, 'edit_form': profile_form, 'menu': profile_menu, 'namespace': 'auth:profile'}
     return render(request, 'registration/edit.html', content)
+
+
+def valid_password(request):
+    token, email, password = request.POST.values()
+    user = authenticate(request, email=email, password=password)
+    context = {'status': False}
+    if user:
+        login(request, user)
+        messages.success(request, "Logged In")
+        context['status'] = True
+    else:
+        context['message'] = 'invalid login or password'
+    return JsonResponse(context, status=200)

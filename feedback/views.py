@@ -1,19 +1,12 @@
-from django.shortcuts import render, redirect
-from django.views import View
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from feedback.forms import FeedBackForm
+from feedback.models import FeedBack
 
 
-class FeedBackView(View):
-    form = FeedBackForm
-
-    def get_context_data(self):
-        return {"form": self.form}
-
-    def get(self, request):
-        return render(request, 'contacts/contacts.html', self.get_context_data())
-
-    def post(self, request):
-        data = self.form(data=request.POST)
-        if data.is_valid():
-            return redirect('contacts:contact')
+class FeedBackView(CreateView):
+    model = FeedBack
+    form_class = FeedBackForm
+    template_name = 'contacts/contacts.html'
+    success_url = reverse_lazy('main:index')

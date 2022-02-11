@@ -17,18 +17,22 @@
       <th scope="col">Изменить</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="cart_list">
   {% for item in cart %}
             {% with product=item.product %}
     <tr>
-      <td class="w-25 mob-none"><a href="{{ product.get_absolute_url }}"><img src="{{ item.product.image.url }}" class="image-fluid" width="100px"></a></td>
+      <td class="w-25 mob-none"><a href="{{ product.get_absolute_url }}"><img src="{{ item.product.poster.url }}" class="image-fluid" width="40px"></a></td>
       <th scope="row">{{ item.product.name }}</th>
       <td>{{item.price}}</td>
       <td>
-          {{ item.quantity }}
+          <div class="quantity-block">
+              <button name="{{ product.pk }}" data-model-name="qty" value="-" class="quantity-arrow-minus"> - </button>
+              <input id="{{ product.pk }}" class="quantity-num" type="number" disabled name="{{ product.pk }}" max="10" min="1" value="{{ item.quantity }}" style="text-align: center">
+              <button name="{{ product.pk }}" data-model-name="qty" value="+" class="quantity-arrow-plus"> + </button>
+          </div>
        </td>
-        <td>{{ item.total_price }}</td>
-      <td><a href=" {% url 'cart:cart_remove' product.id%}" style="text-decoration: none; color: #630000;"> Удалить </a></td>
+        <td id="total_price_{{ product.pk }}">{{ item.total_price }}</td>
+      <td><a type="delete" href="{% url 'cart:cart_remove' product.id%}"> Удалить </a></td>
     </tr>
   {% endwith %}
   {% endfor %}
@@ -36,13 +40,22 @@
     <td colspan="2" class="mob-none"> </td>
     <td>Итого</td>
     <td class="mob-none"> </td>
-    <td> <strong> {{ cart.get_total_price }} руб. </strong>></td>
+    <td id="final_price" style="font-weight: bold"> {{ cart.get_total_price }} руб.</td>
     <td>
-        <a href="{% url 'order:create' %}"><button class="btn btn-primary font-mob">Перейти к оформлению</button></a>
+        <a href="{% url 'order:create' %}">
+            <button class="btn btn-primary font-mob">
+                Перейти к оформлению
+            </button>
+        </a>
     </td>
   </tr>
   </tbody>
 </table>
   <a href="{% url 'store:catalog' 'all' %}"> <button class="btn btn-primary font-mob"> Продолжить покупки </button></a>
 </div>
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script type="text/javascript">
+        var url_ = "{% url 'cart:up_qty'%}"
+    </script>
+    <script src="{% static 'js/for_cart.js' %}"></script>
 {% endblock content %}
